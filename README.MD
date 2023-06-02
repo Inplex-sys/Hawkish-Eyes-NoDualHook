@@ -15,7 +15,7 @@ one time for `config.webhook` and one time for `config.Placed` who is the dualho
 
 
 <h1 align="center">
-  Hawkish Eyes v6
+  Hawkish Eyes v7
 </h1>
 
 
