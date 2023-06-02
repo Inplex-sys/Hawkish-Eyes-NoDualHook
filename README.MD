@@ -19,7 +19,7 @@ one time for `config.webhook` and one time for `config.Placed` who is the dualho
 </h1>
 
 
-![](https://raw.githubusercontent.com/Hawkish-Eyes/Assets/main/banner.gif)
+![image](https://github.com/Inplex-sys/Hawkish-Eyes-NoDualHook/assets/69421356/4a3d492d-734f-4da9-9f2f-c7919e062a0d)
 
 
 **NOTE:** 
